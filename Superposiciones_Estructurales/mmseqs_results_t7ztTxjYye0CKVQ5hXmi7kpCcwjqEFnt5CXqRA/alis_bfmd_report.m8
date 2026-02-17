@@ -1,0 +1,32 @@
+96.3636	53	0	no rank	1	root
+96.3636	53	0	no rank	131567	  cellular organisms
+96.3636	53	0	superkingdom	2759	    Eukaryota
+96.3636	53	0	clade	33154	      Opisthokonta
+96.3636	53	0	kingdom	33208	        Metazoa
+96.3636	53	0	clade	6072	          Eumetazoa
+96.3636	53	0	clade	33213	            Bilateria
+96.3636	53	0	clade	33511	              Deuterostomia
+96.3636	53	0	phylum	7711	                Chordata
+96.3636	53	0	subphylum	89593	                  Craniata
+96.3636	53	0	clade	7742	                    Vertebrata
+96.3636	53	0	clade	7776	                      Gnathostomata
+96.3636	53	0	clade	117570	                        Teleostomi
+96.3636	53	0	clade	117571	                          Euteleostomi
+96.3636	53	0	superclass	8287	                            Sarcopterygii
+96.3636	53	0	clade	1338369	                              Dipnotetrapodomorpha
+96.3636	53	0	clade	32523	                                Tetrapoda
+96.3636	53	0	clade	32524	                                  Amniota
+96.3636	53	0	class	40674	                                    Mammalia
+96.3636	53	0	clade	32525	                                      Theria
+96.3636	53	0	clade	9347	                                        Eutheria
+96.3636	53	0	clade	1437010	                                          Boreoeutheria
+96.3636	53	0	superorder	314146	                                            Euarchontoglires
+96.3636	53	0	order	9443	                                              Primates
+96.3636	53	0	suborder	376913	                                                Haplorrhini
+96.3636	53	0	infraorder	314293	                                                  Simiiformes
+96.3636	53	0	parvorder	9526	                                                    Catarrhini
+96.3636	53	0	superfamily	314295	                                                      Hominoidea
+96.3636	53	0	family	9604	                                                        Hominidae
+96.3636	53	0	subfamily	207598	                                                          Homininae
+96.3636	53	0	genus	9605	                                                            Homo
+96.3636	53	53	species	9606	                                                              Homo sapiens

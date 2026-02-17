@@ -1,0 +1,66 @@
+100.0000	25	0	no rank	1	root
+100.0000	25	0	superkingdom	10239	  Viruses
+56.0000	14	0	clade	2732004	    Varidnaviria
+56.0000	14	0	kingdom	2732005	      Bamfordvirae
+56.0000	14	0	phylum	2732007	        Nucleocytoviricota
+56.0000	14	0	class	2732523	          Megaviricetes
+44.0000	11	0	order	2732554	            Imitervirales
+36.0000	9	0	family	549779	              Mimiviridae
+28.0000	7	0	subfamily	1977630	                Klosneuvirinae
+16.0000	4	0	genus	3044860	                  Yasminevirus
+16.0000	4	0	species	3060817	                    Yasminevirus saudimassiliense
+16.0000	4	4	no rank	2420051	                      Yasminevirus sp. GU-2018
+12.0000	3	0	no rank	2788772	                  unclassified Klosneuvirinae
+8.0000	2	2	species	2487775	                    Terrestrivirus sp.
+4.0000	1	1	species	2487764	                    Dasosvirus sp.
+4.0000	1	0	no rank	1737587	                environmental samples
+4.0000	1	1	species	1737588	                  Megaviridae environmental sample
+4.0000	1	0	subfamily	3044648	                Megamimivirinae
+4.0000	1	0	genus	3080801	                  Moumouvirus
+4.0000	1	0	species	3080759	                    Moumouvirus australiense
+4.0000	1	1	no rank	2109587	                      Moumouvirus australiensis
+8.0000	2	0	family	3044476	              Schizomimiviridae
+8.0000	2	0	no rank	3088363	                unclassified Schizomimiviridae
+8.0000	2	2	species	2596887	                  Mimiviridae sp. ChoanoV1
+8.0000	2	0	order	2732524	            Algavirales
+8.0000	2	0	family	10501	              Phycodnaviridae
+8.0000	2	0	no rank	455363	                unclassified Phycodnaviridae
+4.0000	1	1	species	455364	                  Chrysochromulina ericina virus
+4.0000	1	1	species	2023057	                  Orpheovirus IHUMI-LCC2
+4.0000	1	0	order	2732555	            Pimascovirales
+4.0000	1	0	family	944644	              Marseilleviridae
+4.0000	1	0	no rank	1513461	                unclassified Marseilleviridae
+4.0000	1	1	species	2506605	                  Marseillevirus LCMAC201
+16.0000	4	0	clade	2731341	    Duplodnaviria
+16.0000	4	0	kingdom	2731360	      Heunggongvirae
+16.0000	4	0	phylum	2731618	        Uroviricota
+16.0000	4	0	class	2731619	          Caudoviricetes
+8.0000	2	0	no rank	2788787	            unclassified Caudoviricetes
+4.0000	1	1	species	2591401	              Xanthomonas phage Xoo-sp13
+4.0000	1	1	species	2825622	              Siphoviridae sp. ctiOl67
+4.0000	1	0	family	2560065	            Herelleviridae
+4.0000	1	0	no rank	2572872	              unclassified Herelleviridae
+4.0000	1	1	species	2495576	                Aerococcus phage vB_AviM_AVP
+4.0000	1	0	no rank	2100420	            environmental samples
+4.0000	1	1	species	2100421	              uncultured Caudovirales phage
+12.0000	3	0	class	2840056	    Naldaviricetes
+12.0000	3	0	order	2840070	      Lefavirales
+8.0000	2	0	family	1511852	        Nudiviridae
+8.0000	2	0	genus	1511853	          Alphanudivirus
+4.0000	1	0	species	3047810	            Alphanudivirus droinnubilae
+4.0000	1	1	no rank	2057187	              Drosophila innubila nudivirus
+4.0000	1	0	species	3051618	            Alphanudivirus tertidromelanogasteris
+4.0000	1	1	no rank	2072209	              Esparto virus
+4.0000	1	0	family	1285590	        Hytrosaviridae
+4.0000	1	0	genus	1285593	          Muscavirus
+4.0000	1	0	species	3052348	            Muscavirus musdomesticae
+4.0000	1	1	no rank	523909	              Musca domestica salivary gland hypertrophy virus
+8.0000	2	0	no rank	12429	    unclassified viruses
+8.0000	2	0	no rank	2204151	      unclassified DNA viruses
+8.0000	2	0	no rank	51368	        unclassified dsDNA viruses
+8.0000	2	0	clade	2023203	          Pithoviruses
+4.0000	1	1	species	2506594	            Pithovirus LCPAC304
+4.0000	1	1	species	2506593	            Pithovirus LCPAC302
+8.0000	2	0	no rank	186616	    environmental samples
+4.0000	1	1	species	340016	      uncultured virus
+4.0000	1	1	species	1868660	      uncultured Mediterranean phage

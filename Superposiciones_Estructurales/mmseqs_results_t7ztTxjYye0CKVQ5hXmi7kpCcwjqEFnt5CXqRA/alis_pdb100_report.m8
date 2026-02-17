@@ -1,0 +1,71 @@
+100.0000	13	0	no rank	1	root
+100.0000	13	0	no rank	131567	  cellular organisms
+100.0000	13	0	superkingdom	2759	    Eukaryota
+76.9231	10	0	clade	33154	      Opisthokonta
+61.5385	8	0	kingdom	4751	        Fungi
+61.5385	8	0	subkingdom	451864	          Dikarya
+61.5385	8	0	phylum	4890	            Ascomycota
+61.5385	8	0	clade	716545	              saccharomyceta
+53.8462	7	0	subphylum	147537	                Saccharomycotina
+53.8462	7	0	class	4891	                  Saccharomycetes
+53.8462	7	0	order	4892	                    Saccharomycetales
+53.8462	7	0	family	4893	                      Saccharomycetaceae
+53.8462	7	0	genus	4930	                        Saccharomyces
+53.8462	7	7	species	4932	                          Saccharomyces cerevisiae
+7.6923	1	0	subphylum	147538	                Pezizomycotina
+7.6923	1	0	clade	716546	                  leotiomyceta
+7.6923	1	0	clade	715989	                    sordariomyceta
+7.6923	1	0	class	147550	                      Sordariomycetes
+7.6923	1	0	subclass	222544	                        Sordariomycetidae
+7.6923	1	0	order	5139	                          Sordariales
+7.6923	1	0	family	35718	                            Chaetomiaceae
+7.6923	1	0	genus	1920207	                              Thermothelomyces
+7.6923	1	0	species	78579	                                Thermothelomyces thermophilus
+7.6923	1	1	strain	573729	                                  Thermothelomyces thermophilus ATCC 42464
+15.3846	2	0	kingdom	33208	        Metazoa
+15.3846	2	0	clade	6072	          Eumetazoa
+15.3846	2	0	clade	33213	            Bilateria
+15.3846	2	0	clade	33511	              Deuterostomia
+15.3846	2	0	phylum	7711	                Chordata
+15.3846	2	0	subphylum	89593	                  Craniata
+15.3846	2	0	clade	7742	                    Vertebrata
+15.3846	2	0	clade	7776	                      Gnathostomata
+15.3846	2	0	clade	117570	                        Teleostomi
+15.3846	2	0	clade	117571	                          Euteleostomi
+15.3846	2	0	superclass	8287	                            Sarcopterygii
+15.3846	2	0	clade	1338369	                              Dipnotetrapodomorpha
+15.3846	2	0	clade	32523	                                Tetrapoda
+15.3846	2	0	clade	32524	                                  Amniota
+15.3846	2	0	class	40674	                                    Mammalia
+15.3846	2	0	clade	32525	                                      Theria
+15.3846	2	0	clade	9347	                                        Eutheria
+15.3846	2	0	clade	1437010	                                          Boreoeutheria
+7.6923	1	0	superorder	314145	                                            Laurasiatheria
+7.6923	1	0	order	91561	                                              Artiodactyla
+7.6923	1	0	suborder	9845	                                                Ruminantia
+7.6923	1	0	infraorder	35500	                                                  Pecora
+7.6923	1	0	family	9895	                                                    Bovidae
+7.6923	1	0	subfamily	27592	                                                      Bovinae
+7.6923	1	0	genus	9903	                                                        Bos
+7.6923	1	1	species	9913	                                                          Bos taurus
+7.6923	1	0	superorder	314146	                                            Euarchontoglires
+7.6923	1	0	order	9443	                                              Primates
+7.6923	1	0	suborder	376913	                                                Haplorrhini
+7.6923	1	0	infraorder	314293	                                                  Simiiformes
+7.6923	1	0	parvorder	9526	                                                    Catarrhini
+7.6923	1	0	superfamily	314295	                                                      Hominoidea
+7.6923	1	0	family	9604	                                                        Hominidae
+7.6923	1	0	subfamily	207598	                                                          Homininae
+7.6923	1	0	genus	9605	                                                            Homo
+7.6923	1	1	species	9606	                                                              Homo sapiens
+23.0769	3	0	clade	2698737	      Sar
+23.0769	3	0	clade	33630	        Alveolata
+23.0769	3	0	phylum	5878	          Ciliophora
+23.0769	3	0	subphylum	431838	            Intramacronucleata
+23.0769	3	0	class	6020	              Oligohymenophorea
+23.0769	3	0	order	31277	                Hymenostomatida
+23.0769	3	0	suborder	37093	                  Tetrahymenina
+23.0769	3	0	family	291294	                    Tetrahymenidae
+23.0769	3	0	genus	5890	                      Tetrahymena
+23.0769	3	0	species	5911	                        Tetrahymena thermophila
+23.0769	3	3	strain	312017	                          Tetrahymena thermophila SB210

@@ -5,17 +5,19 @@ from math import sqrt
 import SVD
 import csv
 
-""" prog3.1 modificado
+"""
+prog3.1 modificado
 Calcula % identidad y RMSD para parejas de estructuras
 superpuestas obtenidas con FoldMason.
 Lee:
  - foldmason.pdb (varios MODEL)
- - foldmason_aa.fa (alineamiento multiple)
+ - foldmason/foldmason_aa.fa (alineamiento multiple)
 Genera:
  - resultados_identidad_RMSD.csv
 """
 
 __author__  = 'Modificado para practica CATH'
+
 
 # ------------------------------------------------------------
 # 1) FUNCIONES
@@ -84,32 +86,48 @@ def coords_alineadas(align1,coords1,align2,coords2):
     length = len(align1)
 
     for r in range(0, length):
-        res1 = align1[r:r+1]
-        res2 = align2[r:r+1]
+
+        res1 = align1[r]
+        res2 = align2[r]
 
         if(res1 != '-'): total1+=1
         if(res2 != '-'): total2+=1
 
-        if(res1 == '-' or res2 == '-'): continue
+        if(res1 == '-' or res2 == '-'):
+            continue
 
-        align_coords1.append( extrae_coords_atomo(coords1[total1],' CA ') )
-        align_coords2.append( extrae_coords_atomo(coords2[total2],' CA ') )
+        # evitar errores de rango
+        if total1 >= len(coords1) or total2 >= len(coords2):
+            continue
+
+        c1 = extrae_coords_atomo(coords1[total1],' CA ')
+        c2 = extrae_coords_atomo(coords2[total2],' CA ')
+
+        # evitar residuos sin CA
+        if c1 != [] and c2 != []:
+            align_coords1.append(c1)
+            align_coords2.append(c2)
 
     return (align_coords1,align_coords2)
 
 
 def extrae_coords_atomo(res,atomo_seleccion):
 
-    atom_coords = []
     for atomo in res.split("\n"):
         if(atomo[12:16] == atomo_seleccion):
-            atom_coords = [ float(atomo[30:38]),
-                            float(atomo[38:46]),
-                            float(atomo[46:54]) ]
-    return atom_coords
+            return [ float(atomo[30:38]),
+                     float(atomo[38:46]),
+                     float(atomo[46:54]) ]
+    return []
 
 
 def calcula_superposicion_SVD(pdbh1,pdbh2):
+
+    coords1 = pdbh1['align_coords']
+    coords2 = pdbh2['align_coords']
+
+    if len(coords1) == 0:
+        return None
 
     def calcula_centro(coords):
         centro = [0,0,0]
@@ -133,9 +151,6 @@ def calcula_superposicion_SVD(pdbh1,pdbh2):
                 tmp += coords[j] * rotacion[i][j]
             rcoords[i] = tmp
         return rcoords
-
-    coords1 = pdbh1['align_coords']
-    coords2 = pdbh2['align_coords']
 
     centro1 = calcula_centro(coords1)
     centro2 = calcula_centro(coords2)
@@ -184,6 +199,9 @@ def calcula_identidad(align1,align2):
             if a == b:
                 matches += 1
 
+    if length == 0:
+        return 0.0
+
     return 100.0 * matches / length
 
 
@@ -194,11 +212,17 @@ def calcula_identidad(align1,align2):
 secuencias = lee_fasta("foldmason/foldmason_aa.fa")
 modelos = lee_modelos_PDB("foldmason.pdb")
 
+print("Numero de secuencias:", len(secuencias))
+print("Numero de modelos:", len(modelos))
+
+if len(secuencias) != len(modelos):
+    print("ADVERTENCIA: numero distinto de secuencias y modelos")
+
 resultados = []
 
 print("Dominio1\tDominio2\t%Identidad\tRMSD")
 
-n = len(modelos)
+n = min(len(secuencias), len(modelos))
 
 for i in range(0,n):
     for j in range(i+1,n):
@@ -216,12 +240,14 @@ for i in range(0,n):
         rmsd = calcula_superposicion_SVD(pdb2,pdb1)
         identidad = calcula_identidad(align1,align2)
 
-        print("%s\t%s\t%.2f\t%.2f" %
-              (nombre1,nombre2,identidad,rmsd))
+        if rmsd is not None:
+            print("%s\t%s\t%.2f\t%.2f" %
+                  (nombre1,nombre2,identidad,rmsd))
 
-        resultados.append([nombre1,nombre2,
-                           round(identidad,2),
-                           round(rmsd,3)])
+            resultados.append([nombre1,nombre2,
+                               round(identidad,2),
+                               round(rmsd,3)])
+
 
 # ------------------------------------------------------------
 # 3) GUARDAR RESULTADOS EN CSV

@@ -1,18 +1,9 @@
-En esta práctica trabajé con el archivo foldmason.pdb, que contiene varias estructuras superpuestas dentro de un solo archivo, y con foldmason_aa.fa,
-que tiene el alineamiento de las secuencias. El objetivo era calcular el porcentaje de identidad y el RMSD entre algunas parejas de estructuras y resumir
-los resultados en una tabla.
+En esta práctica trabajé con los archivos PDB de cada dominio y con el archivo foldmason_aa.fa que contiene el alineamiento de las secuencias. El objetivo era calcular el porcentaje de identidad y el RMSD entre distintas parejas de estructuras y resumir los resultados en una tabla.
 
-Usé el código original prog3.1.py, pero fue necesario hacer algunos ajustes para que funcionara correctamente con los datos. Primero entendí que no eran
-varios archivos PDB separados, sino un solo archivo con múltiples modelos dentro, organizados con bloques MODEL y ENDMDL. El script ya estaba pensado para eso,
-pero había que asegurarse de que leyera bien todos los modelos.
+Partí del código base prog3.1.py que nos dio el doctor, pero fue necesario hacer algunos ajustes en la parte principal del programa. Principalmente se modificó la forma en que el script carga las estructuras, para que en lugar de estar limitado a una estructura específica, leyera automáticamente todos los archivos .pdb que están en la carpeta y los guardara en un diccionario usando su nombre como identificador. Así el programa puede comparar todas las parejas posibles de forma automática sin tener que indicar cada comparación manualmente.
 
-Después aparecieron errores como IndexError, que ocurrían porque el alineamiento tenía más posiciones que las coordenadas reales disponibles en la estructura.
-No todos los residuos del alineamiento tienen coordenadas Cα en el PDB, así que el código intentaba acceder a posiciones que no existían. Para solucionarlo,
-agregué validaciones para no salirme del rango de las listas, ignorar posiciones con gaps y verificar que realmente existieran coordenadas antes de usarlas
-para el cálculo del RMSD.
+En cuanto al flujo del programa, primero se lee el archivo FASTA para obtener las secuencias alineadas. Después se cargan las coordenadas de cada archivo PDB y se almacenan. Una vez que se tienen tanto las secuencias como las coordenadas, el programa recorre todas las combinaciones posibles de pares de dominios. Para cada pareja, toma las secuencias alineadas, identifica las posiciones comparables (ignorando gaps) y extrae las coordenadas correspondientes de los átomos Cα. Con esas coordenadas alineadas se calcula la superposición estructural usando SVD y a partir de ahí se obtiene el RMSD. En paralelo también se calcula el porcentaje de identidad directamente a partir del alineamiento.
 
-También modifiqué el script para que generara automáticamente un archivo .csv con los resultados, incluyendo los nombres de los dominios, el porcentaje de identidad
-y el RMSD. Con esas correcciones el programa pudo ejecutarse completo y producir la tabla final.
+Finalmente, los resultados de cada comparación se imprimen en pantalla y además se guardan en un archivo .csv con los nombres de los dominios, el porcentaje de identidad y el RMSD. Esto facilita revisar los resultados después y analizarlos de manera más ordenada.
 
-En general, esta práctica me ayudó a entender mejor la relación entre alineamiento de secuencias y comparación estructural, y a ver que en bioinformática
-muchas veces los datos no coinciden perfectamente, por lo que es importante validar bien la información antes de hacer cálculos.
+En general, esta práctica me ayudó a entender mejor cómo se conectan el alineamiento de secuencias y la comparación estructural. También me permitió ver con más claridad cómo está organizado un script de este tipo: primero la lectura de datos, luego el procesamiento y finalmente el cálculo y almacenamiento de resultados. Fue útil para entender que la parte matemática del RMSD puede mantenerse igual, pero la lógica del programa puede adaptarse para hacerlo más flexible y automático.

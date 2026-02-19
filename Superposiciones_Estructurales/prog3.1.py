@@ -3,80 +3,87 @@
 from __future__ import print_function
 from math import sqrt
 import SVD
+import os
 import csv
 
-"""
-prog3.1 modificado
-Calcula % identidad y RMSD para parejas de estructuras
-superpuestas obtenidas con FoldMason.
-Lee:
- - foldmason.pdb (varios MODEL)
- - foldmason/foldmason_aa.fa (alineamiento multiple)
-Genera:
- - resultados_identidad_RMSD.csv
-"""
-
-__author__  = 'Modificado para practica CATH'
-
-
 # ------------------------------------------------------------
-# 1) FUNCIONES
+# 1) LEE FASTA
 # ------------------------------------------------------------
 
 def lee_fasta(filename):
-    secuencias = []
+
+    secuencias = {}
     with open(filename) as f:
         nombre = ""
         sec = ""
+
         for linea in f:
             linea = linea.strip()
+
             if linea.startswith(">"):
                 if sec != "":
-                    secuencias.append((nombre, sec))
+                    secuencias[nombre] = sec
                     sec = ""
                 nombre = linea[1:]
             else:
                 sec += linea
+
         if sec != "":
-            secuencias.append((nombre, sec))
+            secuencias[nombre] = sec
+
     return secuencias
 
 
-def lee_modelos_PDB(filename):
-    modelos = []
-    modelo_actual = []
-    res = ''
-    prev_resID = ''
+# ------------------------------------------------------------
+# 2) LEE PDB INDIVIDUAL
+# ------------------------------------------------------------
 
+def lee_coordenadas_PDB(filename):
+
+    coords = []
     with open(filename,'r') as pdbfile:
+
+        res = ''
+        prev_resID = ''
+
         for line in pdbfile:
 
-            if line.startswith("MODEL"):
-                modelo_actual = []
-                res = ''
-                prev_resID = ''
+            if line.startswith('TER'):
+                break
+
+            if not line.startswith('ATOM'):
                 continue
 
-            if line.startswith("ENDMDL"):
+            resID = line[17:26]
+
+            if resID != prev_resID:
                 if res != '':
-                    modelo_actual.append(res)
-                modelos.append(modelo_actual)
-                continue
+                    coords.append(res)
+                res = line
+            else:
+                res += line
 
-            if line.startswith("ATOM"):
+            prev_resID = resID
 
-                resID = line[17:26]
+        if res != '':
+            coords.append(res)
 
-                if resID != prev_resID:
-                    if res != '':
-                        modelo_actual.append(res)
-                    res = line
-                else:
-                    res += line
+    return coords
 
-                prev_resID = resID
 
-    return modelos
+# ------------------------------------------------------------
+# 3) FUNCIONES AUXILIARES
+# ------------------------------------------------------------
+
+def extrae_coords_atomo(res,atomo_seleccion):
+
+    for atomo in res.split("\n"):
+        if atomo[12:16] == atomo_seleccion:
+            return [ float(atomo[30:38]),
+                     float(atomo[38:46]),
+                     float(atomo[46:54]) ]
+
+    return []
 
 
 def coords_alineadas(align1,coords1,align2,coords2):
@@ -85,107 +92,31 @@ def coords_alineadas(align1,coords1,align2,coords2):
     align_coords1,align_coords2 = [],[]
     length = len(align1)
 
-    for r in range(0, length):
+    if length != len(align2):
+        return ([],[])
+
+    for r in range(length):
 
         res1 = align1[r]
         res2 = align2[r]
 
-        if(res1 != '-'): total1+=1
-        if(res2 != '-'): total2+=1
+        if res1 != '-': total1 += 1
+        if res2 != '-': total2 += 1
 
-        if(res1 == '-' or res2 == '-'):
+        if res1 == '-' or res2 == '-':
             continue
 
-        # evitar errores de rango
         if total1 >= len(coords1) or total2 >= len(coords2):
             continue
 
         c1 = extrae_coords_atomo(coords1[total1],' CA ')
         c2 = extrae_coords_atomo(coords2[total2],' CA ')
 
-        # evitar residuos sin CA
         if c1 != [] and c2 != []:
             align_coords1.append(c1)
             align_coords2.append(c2)
 
     return (align_coords1,align_coords2)
-
-
-def extrae_coords_atomo(res,atomo_seleccion):
-
-    for atomo in res.split("\n"):
-        if(atomo[12:16] == atomo_seleccion):
-            return [ float(atomo[30:38]),
-                     float(atomo[38:46]),
-                     float(atomo[46:54]) ]
-    return []
-
-
-def calcula_superposicion_SVD(pdbh1,pdbh2):
-
-    coords1 = pdbh1['align_coords']
-    coords2 = pdbh2['align_coords']
-
-    if len(coords1) == 0:
-        return None
-
-    def calcula_centro(coords):
-        centro = [0,0,0]
-        for coord in coords:
-            for dim in range(0,3):
-                centro[dim] += coord[dim]
-        for dim in range(0,3):
-            centro[dim] /= len(coords)
-        return centro
-
-    def calcula_coordenadas_centradas(coords,centro):
-        return [[c[0]-centro[0],
-                 c[1]-centro[1],
-                 c[2]-centro[2]] for c in coords]
-
-    def calcula_coordenadas_rotadas(coords,rotacion):
-        rcoords = [0,0,0]
-        for i in range(0,3):
-            tmp = 0.0
-            for j in range(0,3):
-                tmp += coords[j] * rotacion[i][j]
-            rcoords[i] = tmp
-        return rcoords
-
-    centro1 = calcula_centro(coords1)
-    centro2 = calcula_centro(coords2)
-
-    ccoords1 = calcula_coordenadas_centradas(coords1,centro1)
-    ccoords2 = calcula_coordenadas_centradas(coords2,centro2)
-
-    matriz = [[0,0,0],[0,0,0],[0,0,0]]
-    peso = 1.0/len(ccoords1)
-
-    for i in range(0,3):
-        for j in range(0,3):
-            tmp = 0.0
-            for k in range(0,len(ccoords1)):
-                tmp += ccoords1[k][i] * ccoords2[k][j] * peso
-            matriz[i][j]=tmp
-
-    [U, Sigma, V] = SVD.svd( matriz )
-
-    rotacion = [[0,0,0],[0,0,0],[0,0,0]]
-    for i in range(0,3):
-        for j in range(0,3):
-            rotacion[i][j]= U[j][0]*V[i][0] + \
-                            U[j][1]*V[i][1] + \
-                            U[j][2]*V[i][2]
-
-    rmsd = 0.0
-    for n in range(0,len(coords1)):
-        coords1_rot = calcula_coordenadas_rotadas(ccoords1[n],rotacion)
-        for i in range(0,3):
-            desv = ccoords2[n][i]-coords1_rot[i]
-            rmsd += desv*desv
-
-    rmsd /= len(coords1)
-    return sqrt(rmsd)
 
 
 def calcula_identidad(align1,align2):
@@ -205,37 +136,113 @@ def calcula_identidad(align1,align2):
     return 100.0 * matches / length
 
 
+def calcula_superposicion_SVD(pdbh1,pdbh2):
+
+    coords1 = pdbh1['align_coords']
+    coords2 = pdbh2['align_coords']
+
+    if len(coords1) == 0:
+        return None
+
+    def calcula_centro(coords):
+        centro = [0,0,0]
+        for coord in coords:
+            for dim in range(3):
+                centro[dim] += coord[dim]
+        for dim in range(3):
+            centro[dim] /= len(coords)
+        return centro
+
+    def calcula_coordenadas_centradas(coords,centro):
+        return [[c[0]-centro[0],
+                 c[1]-centro[1],
+                 c[2]-centro[2]] for c in coords]
+
+    def calcula_coordenadas_rotadas(coords,rotacion):
+        rcoords = [0,0,0]
+        for i in range(3):
+            tmp = 0.0
+            for j in range(3):
+                tmp += coords[j] * rotacion[i][j]
+            rcoords[i] = tmp
+        return rcoords
+
+    centro1 = calcula_centro(coords1)
+    centro2 = calcula_centro(coords2)
+
+    ccoords1 = calcula_coordenadas_centradas(coords1,centro1)
+    ccoords2 = calcula_coordenadas_centradas(coords2,centro2)
+
+    matriz = [[0,0,0],[0,0,0],[0,0,0]]
+    peso = 1.0/len(ccoords1)
+
+    for i in range(3):
+        for j in range(3):
+            tmp = 0.0
+            for k in range(len(ccoords1)):
+                tmp += ccoords1[k][i] * ccoords2[k][j] * peso
+            matriz[i][j] = tmp
+
+    [U, Sigma, V] = SVD.svd(matriz)
+
+    rotacion = [[0,0,0],[0,0,0],[0,0,0]]
+    for i in range(3):
+        for j in range(3):
+            rotacion[i][j] = U[j][0]*V[i][0] + \
+                             U[j][1]*V[i][1] + \
+                             U[j][2]*V[i][2]
+
+    rmsd = 0.0
+    for n in range(len(coords1)):
+        coords1_rot = calcula_coordenadas_rotadas(ccoords1[n],rotacion)
+        for i in range(3):
+            desv = ccoords2[n][i]-coords1_rot[i]
+            rmsd += desv*desv
+
+    rmsd /= len(coords1)
+    return sqrt(rmsd)
+
+
 # ------------------------------------------------------------
-# 2) PROGRAMA PRINCIPAL
+# 4) PROGRAMA PRINCIPAL
 # ------------------------------------------------------------
 
 secuencias = lee_fasta("foldmason/foldmason_aa.fa")
-modelos = lee_modelos_PDB("foldmason.pdb")
 
-print("Numero de secuencias:", len(secuencias))
-print("Numero de modelos:", len(modelos))
+pdbs = {}
 
-if len(secuencias) != len(modelos):
-    print("ADVERTENCIA: numero distinto de secuencias y modelos")
+# lee todos los .pdb que estén en la misma carpeta
+for archivo in os.listdir("."):
+    if archivo.endswith(".pdb"):
+        nombre = archivo.replace(".pdb","")
+        pdbs[nombre] = lee_coordenadas_PDB(archivo)
+
+print("Total secuencias:", len(secuencias))
+print("Total PDBs:", len(pdbs))
 
 resultados = []
+nombres = list(pdbs.keys())
 
 print("Dominio1\tDominio2\t%Identidad\tRMSD")
 
-n = min(len(secuencias), len(modelos))
+for i in range(len(nombres)):
+    for j in range(i+1, len(nombres)):
 
-for i in range(0,n):
-    for j in range(i+1,n):
+        nombre1 = nombres[i]
+        nombre2 = nombres[j]
 
-        nombre1, align1 = secuencias[i]
-        nombre2, align2 = secuencias[j]
+        if nombre1 not in secuencias or nombre2 not in secuencias:
+            continue
 
-        pdb1 = {'coords':modelos[i]}
-        pdb2 = {'coords':modelos[j]}
+        align1 = secuencias[nombre1]
+        align2 = secuencias[nombre2]
 
-        (pdb1['align_coords'],pdb2['align_coords']) = \
-            coords_alineadas(align1,modelos[i],
-                             align2,modelos[j])
+        pdb1 = {'coords': pdbs[nombre1]}
+        pdb2 = {'coords': pdbs[nombre2]}
+
+        (pdb1['align_coords'], pdb2['align_coords']) = \
+            coords_alineadas(align1, pdb1['coords'],
+                             align2, pdb2['coords'])
 
         rmsd = calcula_superposicion_SVD(pdb2,pdb1)
         identidad = calcula_identidad(align1,align2)
@@ -248,12 +255,7 @@ for i in range(0,n):
                                round(identidad,2),
                                round(rmsd,3)])
 
-
-# ------------------------------------------------------------
-# 3) GUARDAR RESULTADOS EN CSV
-# ------------------------------------------------------------
-
-with open("resultados_identidad_RMSD.csv", "w", newline="") as f:
+with open("resultados_identidad_RMSD.csv","w",newline="") as f:
     writer = csv.writer(f)
     writer.writerow(["Dominio1","Dominio2",
                      "%Identidad","RMSD"])

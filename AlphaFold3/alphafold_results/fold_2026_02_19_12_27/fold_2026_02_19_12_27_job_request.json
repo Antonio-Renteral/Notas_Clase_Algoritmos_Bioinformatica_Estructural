@@ -1,0 +1,30 @@
+[{
+ "name": "2026-02-19_12:27",
+ "modelSeeds": [
+  "252272038"
+ ],
+ "sequences": [
+  {
+   "dnaSequence": {
+    "sequence": "ACCTGTAGGATCGTACAGGT",
+    "count": 1
+   }
+  },
+  {
+   "dnaSequence": {
+    "sequence": "TGGACATCCTAGCATGTCCA",
+    "count": 1
+   }
+  },
+  {
+   "proteinChain": {
+    "sequence": "MKNINADDTYRIINKIKACRSNNDINQCLSDMTKMVHCEYYLLAIIYPHSMVKSDISILDNYPKKWRQYYDDANLIKYDPIVDYSNSNHSPINWNIFENNAVNKKSPNVIKEAKTSGLITGFSFPIHTANNGFGMLSFAHSEKDNYIDSLFLHACMNIPLIVPSLVDNYRKINIANNKSNNDLTKREKECLAWACEGKSSWDISKILGCSERTVTFHLTNAQMKLNTTNRCQSISKAILTGAIDCPYFKN",
+    "count": 1,
+    "useStructureTemplate": true
+   }
+  }
+ ],
+ "dialect": "alphafoldserver",
+ "version": 1
+}
+]
